@@ -1,5 +1,4 @@
-# chatcjsaga
-chatt
+//chatcjsaga
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,8 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import javax.swing.*;
 
 /**
@@ -22,7 +20,7 @@ import javax.swing.*;
  */
 public class Chatt {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, NullPointerException {
         /* Client ourClient = new Client();
         Server ourServer = new Server();
         ourClient.createSocket();
@@ -118,10 +116,10 @@ class Client implements Serializable {
     String m;
     InetAddress IP;
 
-    Client() throws IOException, ClassNotFoundException {
+    Client() throws IOException, ClassNotFoundException, NullPointerException {
 
         /*try {
-            IP = InetAddress.getLocalHost();
+            hostName = InetAddress.getLocalHost().getHostAddress();
             hostName = IP.getHostAddress();
             System.out.println(hostName);
         } catch (UnknownHostException ex) {
@@ -130,11 +128,13 @@ class Client implements Serializable {
         createSocket();
     }
 
-    void createSocket() throws IOException, ClassNotFoundException {
+    void createSocket() {
         System.out.println("client");
         try {
-             System.out.println("client2");
-            mySocket = new Socket("localhost", PORTNUMBER);
+            System.out.println("client2");
+            hostName = InetAddress.getLocalHost().getHostAddress();
+            System.out.println(hostName);
+            mySocket = new Socket("130.238.13.152", PORTNUMBER);
             System.out.println("Client uppkopplad");
             /*inStream = mySocket.getInputStream();
             outStream = mySocket.getOutputStream();
@@ -150,15 +150,30 @@ class Client implements Serializable {
             //PrintWriter out = new PrintWriter(outstream);
             //out.print();
             */
-        } catch (IOException e) {
+        } 
+        catch (UnknownHostException e){
+            System.out.println("Could not find host");
+        }
+        catch (IOException e) {
             System.out.println("Error reading from file");
-        } finally {
-            mySocket.close();
-            inStream.close();
-            outStream.flush();
-            outStream.close();
-            objectOutput.close();
-            objectInput.close();
+        //} catch (ClassNotFoundException e) {
+            //System.out.println("Error in finding file");
+        }
+        
+        
+        
+        finally {
+            try {
+                mySocket.close();
+                inStream.close();
+                outStream.flush();
+                outStream.close();
+                objectOutput.close();
+                objectInput.close();
+            }
+            catch (IOException e) {
+                System.out.println("Not working");
+            }
         }
     }
 }
@@ -176,7 +191,7 @@ class Server implements Serializable {
     Socket mySocket;
     InetAddress IP;
 
-    Server() throws IOException, ClassNotFoundException {
+    Server() throws IOException, ClassNotFoundException, NullPointerException {
         /*try {
             IP = InetAddress.getLocalHost();
             hostName = IP.getHostAddress();
@@ -189,7 +204,7 @@ class Server implements Serializable {
         System.out.println("server");
     }
 
-    void createSocket() throws IOException, ClassNotFoundException {
+    void createSocket() throws IOException, ClassNotFoundException, NullPointerException {
         System.out.println("serversocket1");
         try {
         
